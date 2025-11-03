@@ -1,4 +1,8 @@
-package batalla.modelo;
+package Batalla.Modelo;
+
+import Batalla.Modelo.EspadaCelestial;
+import Batalla.Modelo.EspadaSagrada;
+import Batalla.Modelo.EspadaSimple;
 
 class BendicionCelestial implements Bendicion {
     @Override

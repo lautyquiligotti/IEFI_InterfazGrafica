@@ -2,7 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package batalla.modelo;
+package Batalla.Modelo;
+
+import Batalla.Modelo.Personaje;
 
 public abstract class Arma {
     protected String nombre;

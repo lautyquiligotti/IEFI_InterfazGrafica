@@ -1,4 +1,6 @@
-package batalla.modelo;
+package Batalla.Modelo;
+
+import Batalla.Modelo.Personaje;
 
 class EspadaCelestial extends Arma {
     public EspadaCelestial() { super("Espada Celestial", 20); }

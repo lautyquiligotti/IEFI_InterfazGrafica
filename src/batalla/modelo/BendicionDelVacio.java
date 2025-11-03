@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package batalla.modelo;
+package Batalla.Modelo;
 
 import batalla.modelo.Bendicion;
-import batalla.modelo.HozVenenosa;
-import batalla.modelo.HozOxidada;
-import batalla.modelo.HozMortifera;
-import batalla.modelo.Arma;
+import Batalla.Modelo.HozVenenosa;
+import Batalla.Modelo.HozOxidada;
+import Batalla.Modelo.HozMortifera;
 
 /**
  *

@@ -1,7 +1,5 @@
-package batalla.modelo;
+package Batalla.Modelo;
 
-import batalla.modelo.Personaje;
-import batalla.modelo.Arma;
 import java.util.List;
 
 public class Reportes {

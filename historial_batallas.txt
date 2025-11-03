@@ -1,5 +1,0 @@
-Heroe: Pumpi | Villano: LordDark | Ganador: LordDark | Turnos: 14
-Heroe: Pumpi | Villano: LordDark | Ganador: Pumpi | Turnos: 7
-Heroe: Mauri | Villano: LautiPuto | Ganador: Mauri | Turnos: 17
-Heroe: lele | Villano: lele | Ganador: lele | Turnos: 17
-Heroe: lauti  | Villano: nico | Ganador: nico | Turnos: 10

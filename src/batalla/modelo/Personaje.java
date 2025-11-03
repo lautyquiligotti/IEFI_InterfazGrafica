@@ -1,7 +1,6 @@
-package batalla.modelo;
+package Batalla.Modelo;
 
 import batalla.modelo.Bendicion;
-import batalla.modelo.Arma;
 import java.util.Random;
 import java.util.ArrayList;
 
