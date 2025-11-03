@@ -6,13 +6,16 @@ import java.util.*;
 
 public class ControladorBatalla {
 
+    // ÚNICO listener válido
+    private BatallaListener listener;
+    public void setListener(BatallaListener listener) { this.listener = listener; }
+
     private Heroe heroe;
     private Villano villano;
     private final List<String> eventosEspeciales = new ArrayList<>();
     private final List<String> historial = new ArrayList<>();
 
-    public ControladorBatalla() {
-    }
+    public ControladorBatalla() {}
 
     public void iniciarBatalla(String apodoHeroe, String apodoVillano) {
         Random rnd = new Random();
@@ -24,49 +27,50 @@ public class ControladorBatalla {
         Personaje actual = heroe;
         Personaje enemigo = villano;
 
+        // Notificar estado inicial
+        if (listener != null) listener.onEstado(heroe, villano);
+
         while (heroe.estaVivo() && villano.estaVivo()) {
+            if (listener != null) listener.onTurno(turno, actual, enemigo);
             System.out.println("----- Turno " + turno + " - " + actual.getNombre() + " -----");
+
             actual.aplicarEstadosAlInicioDelTurno();
+            if (!actual.estaVivo()) break;
 
-            if (!actual.estaVivo()) {
-                break;
-            }
-
-            // Guardar estado previo para informar qué hace
             String antesArma = (actual.getArmaActual() != null) ? actual.getArmaActual().getNombre() : "-";
             int vidaAntesEnemigo = enemigo.getVida();
 
-            // ejecutar acción (invocar o atacar o supremo)
             actual.decidirAccion(enemigo);
 
-            // Detectar si invocó un arma nueva (compara el arma actual)
             String despuesArma = (actual.getArmaActual() != null) ? actual.getArmaActual().getNombre() : "-";
             if (!antesArma.equals(despuesArma)) {
                 String ev = actual.getNombre() + " invocó " + despuesArma;
                 eventosEspeciales.add(ev);
                 System.out.println("[ACCION] " + ev);
+                if (listener != null) listener.onAccion(ev);
             } else {
-                // si la vida del enemigo cambió => atacó o supremo
                 if (enemigo.getVida() != vidaAntesEnemigo) {
-                    System.out.println("[ACCION] " + actual.getNombre() + " dañó a " + enemigo.getNombre()
-                            + " (" + vidaAntesEnemigo + " -> " + enemigo.getVida() + ")");
+                    String ev = actual.getNombre() + " dañó a " + enemigo.getNombre()
+                            + " (" + vidaAntesEnemigo + " -> " + enemigo.getVida() + ")";
+                    System.out.println("[ACCION] " + ev);
+                    if (listener != null) listener.onAccion(ev);
                 } else {
-                    System.out.println("[ACCION] " + actual.getNombre() + " no hizo daño visible este turno.");
+                    String ev = actual.getNombre() + " no hizo daño visible este turno.";
+                    System.out.println("[ACCION] " + ev);
+                    if (listener != null) listener.onAccion(ev);
                 }
             }
 
-            // imprimir estado resumido al final del turno (opcional)
             System.out.println(heroe);
             System.out.println(villano);
+            if (listener != null) listener.onEstado(heroe, villano);
 
-            // cambio de turno
             Personaje temp = actual;
             actual = enemigo;
             enemigo = temp;
             turno++;
         }
 
-        // Determinar ganador y resumen
         String ganador = heroe.estaVivo() ? heroe.getNombre() : villano.getNombre();
         String resumen = "Heroe: " + heroe.getNombre()
                 + " | Villano: " + villano.getNombre()
@@ -74,6 +78,9 @@ public class ControladorBatalla {
                 + " | Turnos: " + turno;
 
         historial.add(resumen);
+
+        if (listener != null)
+            listener.onFin(resumen, heroe, villano, turno, eventosEspeciales, historial);
 
         String reporte = Reportes.generar(heroe, villano, eventosEspeciales, historial, turno);
         VistaConsola.mostrarReporte(reporte);
