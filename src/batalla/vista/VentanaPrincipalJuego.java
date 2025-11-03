@@ -1,4 +1,4 @@
-package batalla.interfazgrafica;
+package batalla.vista;
 
 import batalla.controlador.ControladorBatalla;
 import batalla.modelo.Personaje;
