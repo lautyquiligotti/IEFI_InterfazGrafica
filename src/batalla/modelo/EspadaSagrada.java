@@ -1,6 +1,6 @@
-package Batalla.Modelo;
+package batalla.modelo;
 
-import Batalla.Modelo.Personaje;
+import batalla.modelo.Personaje;
 
 class EspadaSagrada extends Arma {
     public EspadaSagrada() { super("Espada Sagrada", 12); }

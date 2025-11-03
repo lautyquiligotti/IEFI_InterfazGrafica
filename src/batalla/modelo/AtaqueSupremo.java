@@ -1,7 +1,7 @@
-package Batalla.Modelo;
+package batalla.modelo;
 
 import batalla.vista.VistaConsola;
-import Batalla.Modelo.Personaje;
+import batalla.modelo.Personaje;
 
 public abstract class AtaqueSupremo {
     protected String nombre;

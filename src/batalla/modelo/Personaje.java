@@ -1,4 +1,4 @@
-package Batalla.Modelo;
+package batalla.modelo;
 
 import batalla.modelo.Bendicion;
 import java.util.Random;

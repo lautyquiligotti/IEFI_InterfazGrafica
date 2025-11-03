@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-
+package batalla.modelo;
 import batalla.vista.VistaConsola;
 
 public class Villano extends Personaje {

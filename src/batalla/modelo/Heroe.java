@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Batalla.Modelo;
+package batalla.modelo;
 
-import Batalla.Modelo.Personaje;
+import batalla.modelo.Personaje;
 
 public class Heroe extends Personaje {
 

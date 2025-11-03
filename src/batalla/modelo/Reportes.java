@@ -1,4 +1,4 @@
-package Batalla.Modelo;
+package batalla.modelo;
 
 import java.util.List;
 
