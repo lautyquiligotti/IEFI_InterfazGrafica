@@ -26,44 +26,217 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblnombre = new javax.swing.JLabel();
-        lblApodo = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        txtApodo = new javax.swing.JTextField();
-        lblApodo1 = new javax.swing.JLabel();
-        cmbTipo = new javax.swing.JComboBox<>();
-        btnAgregar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         btnEliminar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        lblnombre = new javax.swing.JLabel();
+        lblApodo1 = new javax.swing.JLabel();
+        lblApodo = new javax.swing.JLabel();
+        txtApodo = new javax.swing.JTextField();
+        cmbTipo = new javax.swing.JComboBox<>();
+        txtNombre1 = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        btnCambiar = new javax.swing.JButton();
+        lblVidainicial = new javax.swing.JLabel();
+        lblFuerzainicial = new javax.swing.JLabel();
+        lblDefensainicial = new javax.swing.JLabel();
+        spnFuerzainicial = new javax.swing.JSpinner();
+        spnVidainicial = new javax.swing.JSpinner();
+        spnFuerzainicial1 = new javax.swing.JSpinner();
+        lblDefensainicial1 = new javax.swing.JLabel();
+        txtCantidaddebatallas = new javax.swing.JTextField();
+        lblBendicioninicial = new javax.swing.JLabel();
+        spnBendicioinicial = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Registros de Jugadores"));
+
+        btnEliminar.setText("Eliminar");
+
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         lblnombre.setText("Nombre ");
         lblnombre.setName(""); // NOI18N
-        getContentPane().add(lblnombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
-        lblnombre.getAccessibleContext().setAccessibleName("lblNombre");
-
-        lblApodo.setText("Tipo:");
-        lblApodo.setName(""); // NOI18N
-        getContentPane().add(lblApodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 140, -1));
-        getContentPane().add(txtApodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 140, -1));
 
         lblApodo1.setText("Apodo");
         lblApodo1.setName(""); // NOI18N
-        getContentPane().add(lblApodo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1, -1));
+
+        lblApodo.setText("Tipo:");
+        lblApodo.setName(""); // NOI18N
 
         cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Heroe", "Villano", " " }));
-        getContentPane().add(cmbTipo, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 140, -1));
 
-        btnAgregar.setText("Agregar");
-        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblnombre)
+                    .addComponent(lblApodo1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtApodo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(lblApodo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminar)))
+                .addGap(25, 25, 25))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblnombre)
+                    .addComponent(txtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtApodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblApodo1))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblApodo))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnEliminar)))
+        );
 
-        btnEliminar.setText("Eliminar");
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
+        lblnombre.getAccessibleContext().setAccessibleName("lblNombre");
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Configuracion de Partida"));
+
+        btnCambiar.setText("Cambiar");
+
+        lblVidainicial.setText("Vida Inicial:");
+        lblVidainicial.setName(""); // NOI18N
+
+        lblFuerzainicial.setText("Fuerza Inicial:");
+        lblFuerzainicial.setName(""); // NOI18N
+
+        lblDefensainicial.setText("Cantidad de Batallas:");
+        lblDefensainicial.setName(""); // NOI18N
+
+        lblDefensainicial1.setText("Defensa Inicial:");
+        lblDefensainicial1.setName(""); // NOI18N
+
+        lblBendicioninicial.setText("Bendicion Inicial");
+        lblBendicioninicial.setName(""); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblDefensainicial)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCantidaddebatallas, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCambiar)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblBendicioninicial)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(spnBendicioinicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblFuerzainicial)
+                                        .addComponent(lblVidainicial))
+                                    .addGap(36, 36, 36)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(spnFuerzainicial1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(spnVidainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(lblDefensainicial1)
+                                    .addGap(28, 28, 28)
+                                    .addComponent(spnFuerzainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(203, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblFuerzainicial)
+                            .addComponent(spnFuerzainicial1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(spnVidainicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblVidainicial))
+                        .addGap(33, 33, 33)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDefensainicial1)
+                    .addComponent(spnFuerzainicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBendicioninicial)
+                    .addComponent(spnBendicioinicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblDefensainicial)
+                    .addComponent(txtCantidaddebatallas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnCambiar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnCambiar.getAccessibleContext().setAccessibleName("Cambiar");
+        lblBendicioninicial.getAccessibleContext().setAccessibleName("");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -100,22 +273,45 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
         });
     }    
     // ====== Getters públicos para que Wiring acceda a los componentes ======
-    public javax.swing.JButton getBtnAgregar() { return btnAgregar; }
-    public javax.swing.JButton getBtnEliminar() { return btnEliminar; }
-    public javax.swing.JComboBox<String> getCmbTipo() { return cmbTipo; }
-    public javax.swing.JTextField getTxtNombre1() { return txtNombre; }
-    public javax.swing.JTextField getTxtApodo() { return txtApodo; }
+   // ====== Getters públicos para Wiring ======
+    public javax.swing.JButton getBtnAgregar()           { return btnAgregar; }
+    public javax.swing.JButton getBtnEliminar()          { return btnEliminar; }
+    public javax.swing.JComboBox<String> getCmbTipo()    { return cmbTipo; }
+    public javax.swing.JTextField getTxtNombre1()        { return txtNombre1; }          
+    public javax.swing.JTextField getTxtApodo()          { return txtApodo; }
+
+    // Configuración de Partida (usando tus nombres actuales)
+    public javax.swing.JSpinner getSpnVidainicial()      { return spnVidainicial; }      // Vida
+    public javax.swing.JSpinner getSpnFuerzainicial1()   { return spnFuerzainicial1; }   // Fuerza
+    public javax.swing.JSpinner getSpnFuerzainicial()    { return spnFuerzainicial; } 
+    public javax.swing.JSpinner getSpnBendicioninicial()    { return spnBendicioinicial; }// Defensa (sí, el nombre es raro, pero lo usamos tal cual)
+    public javax.swing.JTextField getTxtCantidaddebatallas() { return txtCantidaddebatallas; } // Cantidad (txt)
+    public javax.swing.JButton getBtnCambiar()           { return btnCambiar; }          // Botón "Cambiar" = randomizar
+
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JComboBox<String> cmbTipo;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblApodo;
     private javax.swing.JLabel lblApodo1;
+    private javax.swing.JLabel lblBendicioninicial;
+    private javax.swing.JLabel lblDefensainicial;
+    private javax.swing.JLabel lblDefensainicial1;
+    private javax.swing.JLabel lblFuerzainicial;
+    private javax.swing.JLabel lblVidainicial;
     private javax.swing.JLabel lblnombre;
+    private javax.swing.JSpinner spnBendicioinicial;
+    private javax.swing.JSpinner spnFuerzainicial;
+    private javax.swing.JSpinner spnFuerzainicial1;
+    private javax.swing.JSpinner spnVidainicial;
     private javax.swing.JTextField txtApodo;
-    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtCantidaddebatallas;
+    private javax.swing.JTextField txtNombre1;
     // End of variables declaration//GEN-END:variables
 }
