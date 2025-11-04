@@ -1,36 +1,31 @@
 package batalla.interfazgrafica;
 
+import batalla.vista.ConfiguracionInicial;
 import batalla.controlador.ControladorBatalla;
+import batalla.controlador.Wiring;
 import javax.swing.*;
 
 public class IEFIInterfazGrafica extends JFrame {
 
-    private ControladorBatalla controlador;
-
     public IEFIInterfazGrafica() {
-        controlador = new ControladorBatalla();
-        initUI();
-    }
+        // Inicializamos el controlador (lógica del juego)
+        ControladorBatalla controlador = new ControladorBatalla();
 
-    private void initUI() {
-        setTitle("Batalla Épica - Interfaz Gráfica");
-        setSize(500, 400);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Creamos la ventana de configuración (vista)
+        ConfiguracionInicial vistaConfiguracion = new ConfiguracionInicial();
 
-        JButton iniciarBtn = new JButton("Iniciar Batalla");
-        iniciarBtn.addActionListener(e -> {
-            String heroe = JOptionPane.showInputDialog("Nombre del héroe:");
-            String villano = JOptionPane.showInputDialog("Nombre del villano:");
-            controlador.iniciarBatalla(heroe, villano);
-        });
+        // Conectamos vista y controlador
+        Wiring.configurar(vistaConfiguracion, controlador);
 
-        add(iniciarBtn);
+        // Mostramos la ventana centrada
+        vistaConfiguracion.setLocationRelativeTo(null);
+        vistaConfiguracion.setVisible(true);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new IEFIInterfazGrafica().setVisible(true);
+            new IEFIInterfazGrafica();  // se ejecuta todo desde acá
         });
     }
 }
+
