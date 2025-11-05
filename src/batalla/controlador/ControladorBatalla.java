@@ -4,10 +4,12 @@ import batalla.modelo.*;
 import batalla.vista.VistaConsola;
 import java.util.*;
 
-// ✅ Tu clase original + agregados para ACTIVIDAD 2 (registro de jugadores)
+// Controlador principal con lógica original + ampliación para Actividad 2
 public class ControladorBatalla {
 
-    // ÚNICO listener válido
+    // ==============================================================
+    // === LISTENER Y CAMPOS BASE ===
+    // ==============================================================
     private BatallaListener listener;
     public void setListener(BatallaListener listener) { this.listener = listener; }
 
@@ -16,17 +18,13 @@ public class ControladorBatalla {
     private final List<String> eventosEspeciales = new ArrayList<>();
     private final List<String> historial = new ArrayList<>();
 
-    public ControladorBatalla() {}
 
     // ==============================================================
-    // =====================  [ACT2] NUEVO  =========================
-    // ============  Registro previo para Configuración  ============
+    // === [ACTIVIDAD 2] REGISTRO DE JUGADORES (desde vista Wiring) ===
     // ==============================================================
 
-    // [ACT2] Tipo de personaje para el registro
     public enum TipoPersonaje { HEROE, VILLANO }
 
-    // [ACT2] DTO liviano para guardar lo que viene de la vista
     public static class RegistroJugador {
         private final String nombre;
         private final String apodo;
@@ -43,32 +41,26 @@ public class ControladorBatalla {
         @Override public String toString() { return tipo + " | " + nombre + " (" + apodo + ")"; }
     }
 
-    // [ACT2] Lista de registrados y “slots” únicos (1 héroe + 1 villano)
     private final List<RegistroJugador> registrados = new ArrayList<>();
     private String apodoHeroeRegistrado = null;
     private String apodoVillanoRegistrado = null;
 
-    // [ACT2] Exponer lista como solo-lectura para depurar/mostrar
     public List<RegistroJugador> getRegistrados() {
         return Collections.unmodifiableList(registrados);
     }
 
-    // [ACT2] Validaciones del primer parcial + regla de unicidad por apodo
     public void agregarJugador(String nombre, String apodo, String tipoStr) throws IllegalArgumentException {
-        if (nombre == null || nombre.trim().isEmpty()) {
+        if (nombre == null || nombre.trim().isEmpty())
             throw new IllegalArgumentException("El nombre no puede estar vacío.");
-        }
-        if (!ValidacionApodos.esValido(apodo)) { // usa tu clase de validación
+        if (!ValidacionApodos.esValido(apodo))
             throw new IllegalArgumentException("Apodo inválido (3-10 caracteres, solo letras y espacios).");
-        }
+
         final String apodoTrim = apodo.trim();
         boolean apodoDuplicado = registrados.stream()
                 .anyMatch(r -> r.getApodo().equalsIgnoreCase(apodoTrim));
-        if (apodoDuplicado) {
+        if (apodoDuplicado)
             throw new IllegalArgumentException("Ya existe un personaje con ese apodo.");
-        }
 
-        // Normalizamos el tipo
         TipoPersonaje tipo;
         if (tipoStr == null) throw new IllegalArgumentException("Tipo no seleccionado.");
         switch (tipoStr.toLowerCase()) {
@@ -78,7 +70,6 @@ public class ControladorBatalla {
             default: throw new IllegalArgumentException("Tipo desconocido: " + tipoStr);
         }
 
-        // Regla: solo 1 héroe y 1 villano
         if (tipo == TipoPersonaje.HEROE) {
             if (apodoHeroeRegistrado != null)
                 throw new IllegalArgumentException("Ya hay un Héroe registrado.");
@@ -92,7 +83,6 @@ public class ControladorBatalla {
         registrados.add(new RegistroJugador(nombre.trim(), apodoTrim, tipo));
     }
 
-    // [ACT2] Eliminar por apodo (limpia slots si corresponde)
     public boolean eliminarPorApodo(String apodo) {
         if (apodo == null || apodo.isBlank()) return false;
         final String ap = apodo.trim();
@@ -114,38 +104,63 @@ public class ControladorBatalla {
         return registrados.remove(r);
     }
 
-    // [ACT2] Chequeo previo para habilitar “Iniciar Batalla”
     public boolean tieneHeroeYVillano() {
         return apodoHeroeRegistrado != null && apodoVillanoRegistrado != null;
     }
 
-    // [ACT2] Helper para iniciar usando lo registrado desde la vista
     public void iniciarBatallaDesdeRegistro() {
         if (!tieneHeroeYVillano()) {
             throw new IllegalStateException("Debe haber 1 Héroe y 1 Villano registrados antes de iniciar.");
         }
         iniciarBatalla(apodoHeroeRegistrado, apodoVillanoRegistrado);
     }
-    // ===================  /[ACT2] NUEVO  =========================
 
 
     // ==============================================================
-    // ==================  TU LÓGICA ORIGINAL  ======================
+    // === [ACTIVIDAD 2] CONFIGURACIÓN DE PARTIDA (vida, fuerza, etc.) ===
+    // ==============================================================
+
+    private static class ConfigPartida {
+        int vidaInicial, fuerzaInicial, defensaInicial, bendicionInicial, cantidadBatallas;
+    }
+    private ConfigPartida config;
+
+    public void configurarPartida(int vida, int fuerza, int defensa, int bendicion, int cantidad) {
+        ConfigPartida c = new ConfigPartida();
+        c.vidaInicial = vida;
+        c.fuerzaInicial = fuerza;
+        c.defensaInicial = defensa;
+        c.bendicionInicial = bendicion;
+        c.cantidadBatallas = (cantidad == 2 || cantidad == 3 || cantidad == 5) ? cantidad : 3;
+        this.config = c;
+    }
+
+
+    // ==============================================================
+    // === LÓGICA ORIGINAL DE BATALLA ===
     // ==============================================================
 
     public void iniciarBatalla(String apodoHeroe, String apodoVillano) {
         Random rnd = new Random();
 
-        // ⚠️ Tu modelo construye Heroe/Villano con (apodo, stats...)
-        // Si en tu Personaje “nombre” representa esto, mantenemos tu firma.
-        heroe = new Heroe(apodoHeroe, 130 + rnd.nextInt(31), 24 + rnd.nextInt(9), 8 + rnd.nextInt(6), 30 + rnd.nextInt(71));
-        villano = new Villano(apodoVillano, 130 + rnd.nextInt(31), 24 + rnd.nextInt(9), 8 + rnd.nextInt(6), 30 + rnd.nextInt(71));
+        // Usa configuración si existe, sino valores aleatorios
+        int vidaH   = (config != null) ? config.vidaInicial     : 130 + rnd.nextInt(31);
+        int fuerzaH = (config != null) ? config.fuerzaInicial   : 24 + rnd.nextInt(9);
+        int defH    = (config != null) ? config.defensaInicial  : 8  + rnd.nextInt(6);
+        int bendH   = (config != null) ? config.bendicionInicial: 30 + rnd.nextInt(71);
+
+        int vidaV   = (config != null) ? config.vidaInicial     : 130 + rnd.nextInt(31);
+        int fuerzaV = (config != null) ? config.fuerzaInicial   : 24 + rnd.nextInt(9);
+        int defV    = (config != null) ? config.defensaInicial  : 8  + rnd.nextInt(6);
+        int bendV   = (config != null) ? config.bendicionInicial: 30 + rnd.nextInt(71);
+
+        heroe   = new Heroe(apodoHeroe, vidaH, fuerzaH, defH, bendH);
+        villano = new Villano(apodoVillano, vidaV, fuerzaV, defV, bendV);
 
         int turno = 1;
         Personaje actual = heroe;
         Personaje enemigo = villano;
 
-        // Notificar estado inicial
         if (listener != null) listener.onEstado(heroe, villano);
 
         while (heroe.estaVivo() && villano.estaVivo()) {
@@ -204,3 +219,4 @@ public class ControladorBatalla {
         VistaConsola.mostrarReporte(reporte);
     }
 }
+
