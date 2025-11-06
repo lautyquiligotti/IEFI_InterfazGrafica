@@ -204,7 +204,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="lblDefensainicial" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblCantidaddeBatallas" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cmbCantidaddebatallas" min="-2" pref="130" max="-2" attributes="0"/>
                       </Group>
@@ -229,7 +229,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="lblDefensainicial1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="spnFuerzainicial" min="-2" pref="130" max="-2" attributes="0"/>
+                                  <Component id="spnDefensainicial" min="-2" pref="130" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -264,7 +264,7 @@
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lblDefensainicial1" min="-2" max="-2" attributes="0"/>
-                      <Component id="spnFuerzainicial" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="spnDefensainicial" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -273,7 +273,7 @@
                   </Group>
                   <EmptySpace pref="12" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblDefensainicial" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblCantidaddeBatallas" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cmbCantidaddebatallas" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -300,13 +300,13 @@
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblDefensainicial">
+        <Component class="javax.swing.JLabel" name="lblCantidaddeBatallas">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cantidad de Batallas:"/>
             <Property name="name" type="java.lang.String" value="" noResource="true"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JSpinner" name="spnFuerzainicial">
+        <Component class="javax.swing.JSpinner" name="spnDefensainicial">
         </Component>
         <Component class="javax.swing.JSpinner" name="spnVidainicial">
         </Component>

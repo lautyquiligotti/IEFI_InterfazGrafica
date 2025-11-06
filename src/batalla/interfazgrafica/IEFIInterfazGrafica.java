@@ -2,30 +2,29 @@ package batalla.interfazgrafica;
 
 import batalla.vista.ConfiguracionInicial;
 import batalla.controlador.ControladorBatalla;
-import batalla.controlador.Wiring;
+import batalla.controlador.ControladorConfigurarcionDeBatalla; // nombre exacto
 import javax.swing.*;
 
 public class IEFIInterfazGrafica extends JFrame {
 
     public IEFIInterfazGrafica() {
-        // Inicializamos el controlador (lógica del juego)
-        ControladorBatalla controlador = new ControladorBatalla();
+        // 1) Crear controladores y vista
+        ControladorBatalla ctrlBatalla = new ControladorBatalla();    // solo pelea (A3)
+        ConfiguracionInicial vistaConfig = new ConfiguracionInicial();// pantalla de config (A2)
 
-        // Creamos la ventana de configuración (vista)
-        ConfiguracionInicial vistaConfiguracion = new ConfiguracionInicial();
+        // 2) Conectar vista + TU controlador de config (A2)
+        ControladorConfigurarcionDeBatalla.configurar(vistaConfig, ctrlBatalla);
 
-        // Conectamos vista y controlador
-        Wiring.configurar(vistaConfiguracion, controlador);
-
-        // Mostramos la ventana centrada
-        vistaConfiguracion.setLocationRelativeTo(null);
-        vistaConfiguracion.setVisible(true);
+        // 3) Mostrar
+        vistaConfig.setLocationRelativeTo(null);
+        vistaConfig.setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new IEFIInterfazGrafica();  // se ejecuta todo desde acá
-        });
+        SwingUtilities.invokeLater(IEFIInterfazGrafica::new);
     }
 }
+
+
+
 

@@ -39,8 +39,8 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
         btnCambiar = new javax.swing.JButton();
         lblVidainicial = new javax.swing.JLabel();
         lblFuerzainicial = new javax.swing.JLabel();
-        lblDefensainicial = new javax.swing.JLabel();
-        spnFuerzainicial = new javax.swing.JSpinner();
+        lblCantidaddeBatallas = new javax.swing.JLabel();
+        spnDefensainicial = new javax.swing.JSpinner();
         spnVidainicial = new javax.swing.JSpinner();
         spnFuerzainicial1 = new javax.swing.JSpinner();
         lblDefensainicial1 = new javax.swing.JLabel();
@@ -137,8 +137,8 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
         lblFuerzainicial.setText("Fuerza Inicial:");
         lblFuerzainicial.setName(""); // NOI18N
 
-        lblDefensainicial.setText("Cantidad de Batallas:");
-        lblDefensainicial.setName(""); // NOI18N
+        lblCantidaddeBatallas.setText("Cantidad de Batallas:");
+        lblCantidaddeBatallas.setName(""); // NOI18N
 
         lblDefensainicial1.setText("Defensa Inicial:");
         lblDefensainicial1.setName(""); // NOI18N
@@ -156,7 +156,7 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(lblDefensainicial)
+                        .addComponent(lblCantidaddeBatallas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbCantidaddebatallas, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -176,7 +176,7 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(lblDefensainicial1)
                                 .addGap(28, 28, 28)
-                                .addComponent(spnFuerzainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(spnDefensainicial, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -199,14 +199,14 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
                         .addGap(33, 33, 33)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDefensainicial1)
-                    .addComponent(spnFuerzainicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnDefensainicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBendicioninicial)
                     .addComponent(spnBendicioinicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDefensainicial)
+                    .addComponent(lblCantidaddeBatallas)
                     .addComponent(cmbCantidaddebatallas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnCambiar))
@@ -294,25 +294,28 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
             }
         });
     }    
-    // ====== Getters públicos para que Wiring acceda a los componentes ======
-   // ====== Getters públicos para Wiring ======
-    public javax.swing.JButton getBtnAgregar()           { return btnAgregar; }
-    public javax.swing.JButton getBtnEliminar()          { return btnEliminar; }
-    public javax.swing.JComboBox<String> getCmbTipo()    { return cmbTipo; }
-    public javax.swing.JTextField getTxtNombre1()        { return txtNombre1; }          
-    public javax.swing.JTextField getTxtApodo()          { return txtApodo; }
-
-    // Configuración de Partida (usando tus nombres actuales)
-    public javax.swing.JSpinner getSpnVidainicial()      { return spnVidainicial; }      // Vida
-    public javax.swing.JSpinner getSpnFuerzainicial1()   { return spnFuerzainicial1; }   // Fuerza
-    public javax.swing.JSpinner getSpnFuerzainicial()    { return spnFuerzainicial; } 
-    public javax.swing.JSpinner getSpnBendicioninicial()    { return spnBendicioinicial; }// Defensa (sí, el nombre es raro, pero lo usamos tal cual)
-   public javax.swing.JComboBox getCmbCantidadBatallas()    { return cmbCantidaddebatallas; }
-    public javax.swing.JButton getBtnCambiar()           { return btnCambiar; }          // Botón "Cambiar" = randomizar
     
-    public javax.swing.JButton getBtnIniciar() { return bntIniciar; }
-    public javax.swing.JButton getBtnCargar() { return btnCargar; }
-    public javax.swing.JButton getBtnSalir()   { return btnSalir; }
+    // ====== Getters públicos para Wiring ======
+    // Estos métodos sirven para usar los botones y campos desde la clase Wiring.
+    // Los componentes son privados, por eso los devolvemos con un get.
+    public javax.swing.JButton getBtnAgregar()            { return btnAgregar; }
+    public javax.swing.JButton getBtnEliminar()           { return btnEliminar; }
+    public javax.swing.JComboBox<String> getCmbTipo()     { return cmbTipo; }
+    public javax.swing.JTextField getTxtNombre1()         { return txtNombre1; }
+    public javax.swing.JTextField getTxtApodo()           { return txtApodo; }
+
+    // Configuración de Partida
+    public javax.swing.JSpinner getSpnVidainicial()       { return spnVidainicial; }     // Vida
+    public javax.swing.JSpinner getSpnFuerzainicial1()    { return spnFuerzainicial1; }  // Fuerza
+    public javax.swing.JSpinner getSpnDefensainicial()    { return spnDefensainicial; }  // Defensa  ✅ (corregido)
+    public javax.swing.JSpinner getSpnBendicioninicial()  { return spnBendicioinicial; } // Bendición
+    public javax.swing.JComboBox<String> getCmbCantidadBatallas() { return cmbCantidaddebatallas; } // ✅ tipado
+
+    public javax.swing.JButton getBtnCambiar()            { return btnCambiar; }
+    public javax.swing.JButton getBtnIniciar()            { return bntIniciar; }
+    public javax.swing.JButton getBtnCargar()             { return btnCargar; }
+    public javax.swing.JButton getBtnSalir()              { return btnSalir; }
+
 
 
     
@@ -331,13 +334,13 @@ public class ConfiguracionInicial extends javax.swing.JFrame {
     private javax.swing.JLabel lblApodo;
     private javax.swing.JLabel lblApodo1;
     private javax.swing.JLabel lblBendicioninicial;
-    private javax.swing.JLabel lblDefensainicial;
+    private javax.swing.JLabel lblCantidaddeBatallas;
     private javax.swing.JLabel lblDefensainicial1;
     private javax.swing.JLabel lblFuerzainicial;
     private javax.swing.JLabel lblVidainicial;
     private javax.swing.JLabel lblnombre;
     private javax.swing.JSpinner spnBendicioinicial;
-    private javax.swing.JSpinner spnFuerzainicial;
+    private javax.swing.JSpinner spnDefensainicial;
     private javax.swing.JSpinner spnFuerzainicial1;
     private javax.swing.JSpinner spnVidainicial;
     private javax.swing.JTextField txtApodo;
