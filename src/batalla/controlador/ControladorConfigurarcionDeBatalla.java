@@ -1,6 +1,7 @@
 package batalla.controlador; // paquete de controlador
 
 import batalla.vista.ConfiguracionInicial; // configuracion incial (la vista) es el formulario con campos y botones
+import batalla.vista.BatallaVentanaBasica; // NUEVO: ventana básica para ver la batalla en A2
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import java.util.*;
@@ -139,7 +140,7 @@ public class ControladorConfigurarcionDeBatalla { // Esta clase se encarga de la
             );
         });
 
-        // 6) Iniciar → arma config y llama al ControladorBatalla (versión consola)
+        // 6) Iniciar → arma config y llama al ControladorBatalla (versión consola + ventana básica)
         vista.getBtnIniciar().addActionListener(e -> {
             try {
                 if (!estado.tieneHeroeYVillano()){
@@ -162,15 +163,23 @@ public class ControladorConfigurarcionDeBatalla { // Esta clase se encarga de la
                 cfg.cantidad  = Integer.parseInt((String) vista.getCmbCantidadBatallas().getSelectedItem());
                 if (cfg.cantidad != 2 && cfg.cantidad != 3 && cfg.cantidad != 5) cfg.cantidad = 3;
 
-                // ✅ Lanza la batalla: usa los valores del formulario si vienen en cfg
-                ctrlBatalla.iniciarBatalla(estado.apodoHeroe, estado.apodoVillano, cfg);
+                // ===========================
+                // NUEVO: abrir ventana básica
+                // ===========================
+                BatallaVentanaBasica vb = new BatallaVentanaBasica(); // ventana simple (A2)
+                ctrlBatalla.setListener(vb);                          // la enganchamos como listener
+                vb.setVisible(true);                                  // la mostramos
 
-                JOptionPane.showMessageDialog(
-                    vista,
-                    "¡Batalla iniciada!",
-                    "Inicio de batalla",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                // ✅ Lanza la(s) batalla(s): usa los valores del formulario si vienen en cfg
+                //    Corre N veces según cfg.cantidad (2, 3 o 5)
+                for (int i = 1; i <= cfg.cantidad; i++) {
+                    System.out.println("\n===============================");
+                    System.out.println(">>> BATALLA #" + i + " de " + cfg.cantidad);
+                    System.out.println("===============================\n");
+                    ctrlBatalla.iniciarBatalla(estado.apodoHeroe, estado.apodoVillano, cfg);
+                }
+
+                
             } catch (Exception ex){
                 JOptionPane.showMessageDialog(
                     vista,
