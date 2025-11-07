@@ -1,51 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package batalla.vista;
 
-/**
- *
- * @author Alumno
- */
+import batalla.controlador.ValidacionApodos;
 import batalla.controlador.ControladorBatalla;
-import batalla.controlador.*;
-
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class VistaConsola {
 
+    private static Consumer<String> onEventoEspecial;
+    private static Consumer<String> onReporte;
+
+    public static void setOnEventoEspecial(Consumer<String> c) { onEventoEspecial = c; }
+    public static void setOnReporte(Consumer<String> c) { onReporte = c; }
+
+    // main para uso en modo consola (opcional)
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        try (Scanner sc = new Scanner(System.in)) {
+            System.out.println("=== SISTEMA DE BATALLA (CONSOLA) ===");
+            System.out.print("Ingrese apodo del Héroe: ");
+            String apodoHeroe = sc.nextLine();
+            while (!ValidacionApodos.esValido(apodoHeroe)) {
+                System.out.print("Apodo inválido. Intente nuevamente: ");
+                apodoHeroe = sc.nextLine();
+            }
 
-        System.out.println("=== SISTEMA DE BATALLA ===");
-        System.out.print("Ingrese apodo del Héroe: ");
-        String apodoHeroe = sc.nextLine();
+            System.out.print("Ingrese apodo del Villano: ");
+            String apodoVillano = sc.nextLine();
+            while (!ValidacionApodos.esValido(apodoVillano)) {
+                System.out.print("Apodo inválido. Intente nuevamente: ");
+                apodoVillano = sc.nextLine();
+            }
 
-        while (!ValidacionApodos.esValido(apodoHeroe)) {
-            System.out.print("Apodo inválido. Intente nuevamente: ");
-            apodoHeroe = sc.nextLine();
+            ControladorBatalla controlador = new ControladorBatalla();
+            controlador.iniciarBatalla(apodoHeroe, apodoVillano);
         }
-
-        System.out.print("Ingrese apodo del Villano: ");
-        String apodoVillano = sc.nextLine();
-
-        while (!ValidacionApodos.esValido(apodoVillano)) {
-            System.out.print("Apodo inválido. Intente nuevamente: ");
-            apodoVillano = sc.nextLine();
-        }
-
-        ControladorBatalla controlador = new ControladorBatalla();
-        controlador.iniciarBatalla(apodoHeroe, apodoVillano);
-
-        sc.close();
     }
 
+    // Métodos usados por el modelo/controlador para notificar salidas
     public static void mostrarReporte(String reporte) {
         System.out.println(reporte);
+        if (onReporte != null) onReporte.accept(reporte);
     }
 
     public static void mostrarEventoEspecial(String evento) {
-        System.out.println("[EVENTO ESPECIAL] " + evento);
+        System.out.println("[EVENTO] " + evento);
+        if (onEventoEspecial != null) onEventoEspecial.accept(evento);
     }
 }
