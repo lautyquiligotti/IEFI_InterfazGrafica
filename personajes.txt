@@ -1,0 +1,6 @@
+lolo,lolo,Heroe,0,0,0,5
+tito,tito,Villano,87,1,0,1
+fghj,fghj,Heroe,60,1,1,1
+dfgbh,dfgbh,Villano,0,0,1,1
+kkkk,kkkk,Heroe,23,1,1,2
+fghnj,fghnj,Villano,0,0,1,1

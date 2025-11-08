@@ -87,28 +87,19 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         tabsResultados = new javax.swing.JTabbedPane();
-        jTabbedPane4 = new javax.swing.JTabbedPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtEstadistica = new javax.swing.JTextArea();
         jTabbedPane5 = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         JlHistorial = new javax.swing.JList<>();
         jTabbedPane6 = new javax.swing.JTabbedPane();
+        jTabbedPane4 = new javax.swing.JTabbedPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtEstadistica = new javax.swing.JTextArea();
         btncerrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResumen = new javax.swing.JTextArea();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, -1));
-
-        txtEstadistica.setEditable(false);
-        txtEstadistica.setColumns(20);
-        txtEstadistica.setRows(5);
-        jScrollPane2.setViewportView(txtEstadistica);
-
-        jTabbedPane4.addTab("tab1", jScrollPane2);
-
-        tabsResultados.addTab("Estadistica", jTabbedPane4);
 
         JlHistorial.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -121,6 +112,15 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
 
         tabsResultados.addTab("Historial", jTabbedPane5);
         tabsResultados.addTab("Resumen", jTabbedPane6);
+
+        txtEstadistica.setEditable(false);
+        txtEstadistica.setColumns(20);
+        txtEstadistica.setRows(5);
+        jScrollPane2.setViewportView(txtEstadistica);
+
+        jTabbedPane4.addTab("tab1", jScrollPane2);
+
+        tabsResultados.addTab("Estadistica", jTabbedPane4);
 
         getContentPane().add(tabsResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 230));
         tabsResultados.getAccessibleContext().setAccessibleName("Resumen");

@@ -21,9 +21,6 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
     private final Personaje heroe;
     private final Personaje villano;
 
-    // 🔹 CAMPOS PARA EL REPORTE FINAL (Punto 4)
-    private final List<RegistroBatalla> registroBatallas = new ArrayList<>();
-    private final List<ResumenJugador> resumenJugadores = new ArrayList<>();
     private final List<String> eventosHistoricos = new ArrayList<>();
 
     // =======================================================
@@ -44,6 +41,7 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
 
         inicializarEventos();
         inicializarVista();
+        this.vista.setLocationRelativeTo(null); 
     }
 
     // =======================================================
@@ -59,24 +57,19 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
         vista.getMenuPartida().add(salir);
 
         JMenuItem verReporte = new JMenuItem("Ver Reporte Final");
-        // Lanza el nuevo controlador de resultados con los datos acumulados
         verReporte.addActionListener(e -> new ControladorResultadosBatalla(this).mostrarResultados());
         vista.getMenuVer().add(verReporte);
     }
-
-    // [CÓDIGO OMITIDO: inicializarVista, actualizarTurno, actualizarPartida, actualizarEstadoPersonajes, agregarEvento]
-
+    
+    // ... (El resto de los métodos de actualización de vista se mantienen igual) ...
+    
     private void inicializarVista() {
         vista.getLblPartida().setText("Partida 1/" + totalPartidas);
         vista.getLblTurno().setText("Turno 1");
-
-        // Configurar barras
         vista.getBarraVidaHeroe().setMaximum(heroe.getVida());
         vista.getBarraVidaVillano().setMaximum(villano.getVida());
         vista.getBarraBendicionHeroe().setMaximum(100);
         vista.getBarraBendicionVillano().setMaximum(100);
-
-        // Mostrar datos iniciales
         actualizarEstadoPersonajes(heroe, villano);
         vista.getLogEventos().append("🏁 Comienza la batalla entre "
                 + heroe.getNombre() + " y " + villano.getNombre() + "!\n");
@@ -94,7 +87,6 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
     }
 
     public void actualizarEstadoPersonajes(Personaje heroe, Personaje villano) {
-        // Héroe
         vista.getLblNombreHeroe().setText("Nombre: " + heroe.getNombre());
         vista.getLblApodoHeroe().setText("Clase: " + heroe.getClass().getSimpleName());
         vista.getBarraVidaHeroe().setValue(heroe.getVida());
@@ -102,8 +94,6 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
         vista.getLblArmaHeroe().setText("Arma: " +
                 (heroe.getArmaActual() != null ? heroe.getArmaActual().getNombre() : "-"));
         vista.getLblEstadoHeroe().setText("Estado: " + (heroe.estaVivo() ? "Activo" : "Derrotado"));
-
-        // Villano
         vista.getLblNombreVillano().setText("Nombre: " + villano.getNombre());
         vista.getLblApodoVillano().setText("Clase: " + villano.getClass().getSimpleName());
         vista.getBarraVidaVillano().setValue(villano.getVida());
@@ -118,14 +108,13 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
         vista.getLogEventos().setCaretPosition(vista.getLogEventos().getDocument().getLength());
     }
 
-    // MODIFICADO en el primer paso para dejar abierta la ventana principal
     public void mostrarGanador(String ganador) {
         JOptionPane.showMessageDialog(vista, "🏆 Ganador: " + ganador);
     }
 
-    // MODIFICADO en el paso 5 para guardar la partida
     private void guardarPartida() {
         try {
+            // [CORREGIDO] Usar FILE_NAME en lugar de MANUAL_SAVE_FILE
             ServicioPersistencia.guardarPartida(heroe, villano, partidaActual, totalPartidas);
             JOptionPane.showMessageDialog(vista, "Partida guardada exitosamente en " + ServicioPersistencia.FILE_NAME + " ✅");
         } catch (IOException ex) {
@@ -163,39 +152,41 @@ public class ControladorVentanaPrincipalJuego implements BatallaListener {
                       List<String> historial) {
         SwingUtilities.invokeLater(() -> {
             agregarEvento("🏁 " + resumen);
-
-            // 🔹 Captura de Datos para Reporte Final (Punto 4)
-            String ganador = heroe.estaVivo() ? heroe.getNombre() : villano.getNombre();
-
-            // 1. Registro de Batalla
-            registroBatallas.add(new RegistroBatalla(
-                    registroBatallas.size() + 1, // Número de batalla (simple para una sola batalla)
-                    heroe.getNombre(),
-                    villano.getNombre(),
-                    ganador,
-                    turnos));
-
-            // 2. Acumular eventos especiales
+            
             eventosHistoricos.addAll(eventosEspeciales);
-
-            // 3. Resumen de Jugadores (Asumiendo que sólo son 2)
-            resumenJugadores.clear(); 
-            resumenJugadores.add(new ResumenJugador(
-                    heroe.getNombre(), heroe.getApodo(), "Heroe", heroe.getVida(),
-                    heroe.estaVivo() ? 1 : 0, heroe.getSupremosUsados(), heroe.getArmasInvocadas().size()));
-
-            resumenJugadores.add(new ResumenJugador(
-                    villano.getNombre(), villano.getApodo(), "Villano", villano.getVida(),
-                    villano.estaVivo() ? 1 : 0, villano.getSupremosUsados(), villano.getArmasInvocadas().size()));
+            String ganador = heroe.estaVivo() ? heroe.getNombre() : villano.getNombre();
+            
+            RegistroBatalla registro = new RegistroBatalla(
+                    (int) (System.currentTimeMillis() / 1000), 
+                    heroe.getNombre(), 
+                    villano.getNombre(), 
+                    ganador, 
+                    turnos);
+            
+            List<ResumenJugador> resumenesDeEstaBatalla = List.of(
+                new ResumenJugador(
+                    heroe.getNombre(), heroe.getApodo(), "Heroe", heroe.getVida(), 
+                    heroe.estaVivo() ? 1 : 0, heroe.getSupremosUsados(), heroe.getArmasInvocadas().size()),
+                new ResumenJugador(
+                    villano.getNombre(), villano.getApodo(), "Villano", villano.getVida(), 
+                    villano.estaVivo() ? 1 : 0, villano.getSupremosUsados(), villano.getArmasInvocadas().size())
+            );
+            
+            try {
+                // [AÑADIDO] Guardar en archivos permanentes
+                ServicioPersistencia.guardarResultadoBatalla(registro);
+                ServicioPersistencia.actualizarRankingPersonajes(resumenesDeEstaBatalla);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(vista, "Error al guardar el historial permanente: " + e.getMessage(), "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
+            }
 
             mostrarGanador(ganador);
         });
     }
-
+    
     // =======================================================
-    // 🔹 Getters para el Controlador de Resultados (LOS FALTANTES)
+    // 🔹 Getter (Solo para eventos de la sesión actual)
     // =======================================================
-    public List<RegistroBatalla> getRegistroBatallas() { return registroBatallas; }
-    public List<ResumenJugador> getResumenJugadores() { return resumenJugadores; }
     public List<String> getEventosHistoricos() { return eventosHistoricos; }
 }
