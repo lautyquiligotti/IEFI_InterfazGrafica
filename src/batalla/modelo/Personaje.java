@@ -170,4 +170,32 @@ public abstract class Personaje {
                ", %bend/mald=" + porcentajeBendicion +
                ", supremosUsados=" + supremosUsados + "]";
     }
+        // ==========================================================
+    // 🔹 Métodos adicionales requeridos por la interfaz gráfica
+    // ==========================================================
+
+    // El apodo puede ser igual al nombre si no existe un campo separado
+    public String getApodo() {
+        return nombre;
+    }
+
+    // Devuelve el porcentaje de bendición (0-100)
+    public int getBendicion() {
+        return porcentajeBendicion;
+    }
+
+    // Devuelve el nombre del arma actual o "-"
+    public String getArma() {
+        return (armaActual != null) ? armaActual.getNombre() : "-";
+    }
+
+    // Devuelve un estado textual (puede mejorarse si hay estados especiales)
+    public String getEstado() {
+        if (!estaVivo()) return "Derrotado";
+        if (vida < 20) return "Crítico";
+        if (defensaBuffTurnosRestantes > 0) return "Defensa++";
+        if (venenoTurnosRestantes > 0) return "Envenenado";
+        return "Normal";
+    }
+
 }

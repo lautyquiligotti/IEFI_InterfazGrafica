@@ -1,11 +1,13 @@
 package batalla.vista;
 
 import javax.swing.*;
-import javax.swing.DefaultListModel;
 import java.util.List;
 
 public class VentanaResultadosBatalla extends javax.swing.JFrame {
 
+    // ==========================================================
+    // 🔹 Constructor
+    // ==========================================================
     public VentanaResultadosBatalla() {
         initComponents();
         setTitle("🏆 Resultados de la Batalla");
@@ -48,7 +50,6 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
             vr.setVisible(true);
         });
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,12 +70,12 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         JlHistorial = new javax.swing.JList<>();
         jTabbedPane6 = new javax.swing.JTabbedPane();
+        btncerrar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResumen = new javax.swing.JTextArea();
-        btncerrar = new javax.swing.JButton();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, -1));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, -1));
 
         txtEstadistica.setEditable(false);
         txtEstadistica.setColumns(20);
@@ -95,17 +96,9 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         jTabbedPane5.addTab("tab1", jScrollPane3);
 
         tabsResultados.addTab("Historial", jTabbedPane5);
-
-        txtResumen.setEditable(false);
-        txtResumen.setColumns(20);
-        txtResumen.setRows(5);
-        jScrollPane1.setViewportView(txtResumen);
-
-        jTabbedPane6.addTab("tab1", jScrollPane1);
-
         tabsResultados.addTab("Resumen", jTabbedPane6);
 
-        add(tabsResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 30));
+        getContentPane().add(tabsResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 230));
         tabsResultados.getAccessibleContext().setAccessibleName("Resumen");
 
         btncerrar.setText("cerrar");
@@ -114,7 +107,14 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
                 btncerrarActionPerformed(evt);
             }
         });
-        add(btncerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, -1, -1));
+        getContentPane().add(btncerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
+
+        txtResumen.setEditable(false);
+        txtResumen.setColumns(20);
+        txtResumen.setRows(5);
+        jScrollPane1.setViewportView(txtResumen);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 360, 160));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarActionPerformed
@@ -138,3 +138,4 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     private javax.swing.JTextArea txtResumen;
     // End of variables declaration//GEN-END:variables
 
+}
