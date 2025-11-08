@@ -12,22 +12,21 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     // ==========================================================
     // 🔹 Constructor
     // ==========================================================
-    public VentanaResultadosBatalla() {
-        initComponents();
-        setTitle("🏆 Resultados de la Batalla");
-        setLocationRelativeTo(null);
-        btncerrar.addActionListener(e -> dispose());
-        
-        // Inicialización y configuración de la tabla de Ranking
-        tablaRanking = new JTable();
-        JScrollPane scrollTabla = new JScrollPane(tablaRanking);
-        
-        // Asume que jTabbedPane6 es el panel para el Ranking/Resumen.
-        // Se añade el JScrollPane con la tabla a ese panel.
-        // Se remueve cualquier componente que estuviera antes en el JTabbedPane6 (Resumen/Ranking tab).
-        jTabbedPane6.removeAll();
-        jTabbedPane6.add(scrollTabla);
-    }
+public VentanaResultadosBatalla() {
+    initComponents();
+    setTitle("🏆 Resultados de la Batalla");
+
+    setSize(600, 500);      
+    setLocationRelativeTo(null);  // centrar en pantalla
+
+    btncerrar.addActionListener(e -> dispose());
+
+    // Tabla Ranking
+    tablaRanking = new JTable();
+    JScrollPane scrollTabla = new JScrollPane(tablaRanking);
+    jTabbedPane6.removeAll();
+    jTabbedPane6.add(scrollTabla);
+}
 
     // ==========================================================
     // 🔹 Métodos para mostrar información desde el controlador
@@ -36,7 +35,7 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     /** Muestra el resumen general de la batalla */
     // [Se mantiene este método, aunque no se usa en el nuevo controlador]
     public void mostrarResumen(String texto) {
-        txtResumen.setText(texto);
+        //txtResumen.setText(texto);
     }
 
     /** Muestra las estadísticas detalladas */
@@ -47,8 +46,15 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     /** Carga el historial de batallas (lista de acciones o resultados) */
     public void mostrarHistorial(List<String> items) {
         DefaultListModel<String> model = new DefaultListModel<>();
-        for (String item : items) model.addElement(item);
+
+        for (String item : items) {
+            // Mejora visual simple: cada campo en nueva línea
+            String formateado = "<html>" + item.replace(" | ", "<br>") + "</html>";
+            model.addElement(formateado);
+        }
+
         JlHistorial.setModel(model);
+        JlHistorial.setVisibleRowCount(8);
     }
     
     /** Muestra el ranking de jugadores usando un ModeloTablaRanking */
@@ -61,16 +67,16 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
 
     /** Ejemplo de prueba rápida */
     public static void main(String[] args) {
-        // ... (Mantener el resto del código inalterado)
         SwingUtilities.invokeLater(() -> {
             VentanaResultadosBatalla vr = new VentanaResultadosBatalla();
             vr.mostrarResumen("🏁 La batalla terminó en 5 rondas. Ganó el héroe.");
             vr.mostrarEstadisticas("Héroe: 2 victorias\nVillano: 1 victoria");
             vr.mostrarHistorial(java.util.List.of(
-                "Batalla 1: Héroe venció al villano",
-                "Batalla 2: Villano ganó la revancha",
-                "Batalla 3: Héroe usó su ataque final y ganó"
+                "BATALLA #1 – Héroe: Juan | Villano: Nico | Ganador: Juan | Turnos: 8",
+                "BATALLA #2 – Héroe: Ana | Villano: Pepe | Ganador: Pepe | Turnos: 12",
+                "BATALLA #3 – Héroe: Lauti | Villano: Fulanito | Ganador: Lauti | Turnos: 6"
             ));
+            vr.pack();
             vr.setVisible(true);
         });
     }
@@ -95,8 +101,6 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         txtEstadistica = new javax.swing.JTextArea();
         btncerrar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtResumen = new javax.swing.JTextArea();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 80, -1));
@@ -108,7 +112,7 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(JlHistorial);
 
-        jTabbedPane5.addTab("tab1", jScrollPane3);
+        jTabbedPane5.addTab("Batallas", jScrollPane3);
 
         tabsResultados.addTab("Historial", jTabbedPane5);
         tabsResultados.addTab("Resumen", jTabbedPane6);
@@ -118,11 +122,11 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         txtEstadistica.setRows(5);
         jScrollPane2.setViewportView(txtEstadistica);
 
-        jTabbedPane4.addTab("tab1", jScrollPane2);
+        jTabbedPane4.addTab("Estadistica", jScrollPane2);
 
         tabsResultados.addTab("Estadistica", jTabbedPane4);
 
-        getContentPane().add(tabsResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 360, 230));
+        getContentPane().add(tabsResultados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 320));
         tabsResultados.getAccessibleContext().setAccessibleName("Resumen");
 
         btncerrar.setText("cerrar");
@@ -131,14 +135,7 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
                 btncerrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btncerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, -1, -1));
-
-        txtResumen.setEditable(false);
-        txtResumen.setColumns(20);
-        txtResumen.setRows(5);
-        jScrollPane1.setViewportView(txtResumen);
-
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 360, 160));
+        getContentPane().add(btncerrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btncerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncerrarActionPerformed
@@ -149,7 +146,6 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> JlHistorial;
     private javax.swing.JButton btncerrar;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -159,7 +155,6 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane6;
     private javax.swing.JTabbedPane tabsResultados;
     private javax.swing.JTextArea txtEstadistica;
-    private javax.swing.JTextArea txtResumen;
     // End of variables declaration//GEN-END:variables
 
 }
