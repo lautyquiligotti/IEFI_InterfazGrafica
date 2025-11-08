@@ -1,9 +1,13 @@
 package batalla.vista;
 
+import batalla.modelo.ModeloTablaRanking; // Nueva importación
 import javax.swing.*;
 import java.util.List;
 
 public class VentanaResultadosBatalla extends javax.swing.JFrame {
+
+    // 🔹 Nuevo campo para la tabla de Ranking
+    private javax.swing.JTable tablaRanking;
 
     // ==========================================================
     // 🔹 Constructor
@@ -13,6 +17,16 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         setTitle("🏆 Resultados de la Batalla");
         setLocationRelativeTo(null);
         btncerrar.addActionListener(e -> dispose());
+        
+        // Inicialización y configuración de la tabla de Ranking
+        tablaRanking = new JTable();
+        JScrollPane scrollTabla = new JScrollPane(tablaRanking);
+        
+        // Asume que jTabbedPane6 es el panel para el Ranking/Resumen.
+        // Se añade el JScrollPane con la tabla a ese panel.
+        // Se remueve cualquier componente que estuviera antes en el JTabbedPane6 (Resumen/Ranking tab).
+        jTabbedPane6.removeAll();
+        jTabbedPane6.add(scrollTabla);
     }
 
     // ==========================================================
@@ -20,6 +34,7 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
     // ==========================================================
 
     /** Muestra el resumen general de la batalla */
+    // [Se mantiene este método, aunque no se usa en el nuevo controlador]
     public void mostrarResumen(String texto) {
         txtResumen.setText(texto);
     }
@@ -35,9 +50,18 @@ public class VentanaResultadosBatalla extends javax.swing.JFrame {
         for (String item : items) model.addElement(item);
         JlHistorial.setModel(model);
     }
+    
+    /** Muestra el ranking de jugadores usando un ModeloTablaRanking */
+    public void mostrarRanking(ModeloTablaRanking modelo) {
+        if (tablaRanking != null) {
+            tablaRanking.setModel(modelo);
+        }
+    }
+
 
     /** Ejemplo de prueba rápida */
     public static void main(String[] args) {
+        // ... (Mantener el resto del código inalterado)
         SwingUtilities.invokeLater(() -> {
             VentanaResultadosBatalla vr = new VentanaResultadosBatalla();
             vr.mostrarResumen("🏁 La batalla terminó en 5 rondas. Ganó el héroe.");

@@ -10,7 +10,7 @@ import batalla.modelo.Personaje;
  *
  * @author Mar
  */
- class HozVenenosa extends Arma {
+ public class HozVenenosa extends Arma {
     public HozVenenosa() { super("Hoz Venenosa", 10); }
     @Override
     public void usarEfectoEspecial(Personaje objetivo) {

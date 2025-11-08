@@ -10,7 +10,7 @@ import batalla.modelo.Personaje;
  *
  * @author Mar
  */
- class EspadaSimple extends Arma {
+ public class EspadaSimple extends Arma {
     public EspadaSimple() { super("Espada Simple", 6); }
     @Override
     public void usarEfectoEspecial(Personaje objetivo) {

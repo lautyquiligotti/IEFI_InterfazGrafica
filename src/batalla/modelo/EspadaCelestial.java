@@ -2,7 +2,7 @@ package batalla.modelo;
 
 import batalla.modelo.Personaje;
 
-class EspadaCelestial extends Arma {
+public class EspadaCelestial extends Arma {
     public EspadaCelestial() { super("Espada Celestial", 20); }
     @Override
     public void usarEfectoEspecial(Personaje objetivo) {

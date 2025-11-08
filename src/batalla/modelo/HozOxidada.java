@@ -10,7 +10,7 @@ import batalla.modelo.Personaje;
  *
  * @author Mar
  */
-class HozOxidada extends Arma {
+public class HozOxidada extends Arma {
     public HozOxidada() { super("Hoz Oxidada", 6); }
     @Override
     public void usarEfectoEspecial(Personaje objetivo) {

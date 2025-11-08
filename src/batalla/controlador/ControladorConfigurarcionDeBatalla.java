@@ -5,6 +5,7 @@ import batalla.vista.VentanaPrincipalJuego;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import java.util.*;
+import java.io.FileNotFoundException; // Necesario para la función de carga
 
 public class ControladorConfigurarcionDeBatalla {
 
@@ -219,18 +220,20 @@ public class ControladorConfigurarcionDeBatalla {
                 // 🔹 Conectar el listener entre la batalla y la ventana
                 ctrlBatalla.setListener(ctrlJuego);
 
-                // Mostrar ventana principal y cerrar la configuración
-                vpj.setVisible(true);
-                vista.dispose();
-
-                // ==============================
                 // 🔹 Iniciar la batalla completa en un hilo
-                // ==============================
-                new Thread(() -> ctrlBatalla.iniciarBatalla(
+                Thread batallaThread = new Thread(() -> ctrlBatalla.iniciarBatalla(
                         heroe.getNombre(),
                         villano.getNombre(),
                         cfg
-                )).start();
+                ));
+
+                // [MODIFICACIÓN CLAVE] Mostrar ventana principal y cerrar la configuración en el EDT
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    vpj.setVisible(true);
+                    vista.dispose();
+                    batallaThread.start();
+                });
+
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(vista,
@@ -240,9 +243,46 @@ public class ControladorConfigurarcionDeBatalla {
         });
 
         // Cargar / Salir
-        vista.getBtnCargar().addActionListener(e
-                -> JOptionPane.showMessageDialog(vista, "Funcionalidad de carga no implementada todavía.", "Aviso", JOptionPane.INFORMATION_MESSAGE)
-        );
+        vista.getBtnCargar().addActionListener(e -> {
+            try {
+                // [Uso de la clase anidada para la carga]
+                ServicioPersistencia.EstadoPartidaGuardada estadoCargado = ServicioPersistencia.cargarPartida();
+
+                // 🔹 Crear ventana principal y controlador con el estado cargado
+                VentanaPrincipalJuego vpj = new VentanaPrincipalJuego();
+                ControladorVentanaPrincipalJuego ctrlJuego
+                        = new ControladorVentanaPrincipalJuego(
+                                vpj, ctrlBatalla, 
+                                estadoCargado.heroe, estadoCargado.villano, 
+                                estadoCargado.totalPartidas);
+                
+                // Nota: La información del arma actual y supremos se pierde.
+
+                // Mostrar ventana principal y cerrar la configuración
+                ctrlBatalla.setListener(ctrlJuego);
+                
+                // [MODIFICACIÓN CLAVE] Mostrar ventana principal y cerrar la configuración en el EDT
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    vpj.setVisible(true);
+                    vista.dispose();
+                    
+                    JOptionPane.showMessageDialog(vpj, 
+                            "Partida base cargada (Héroe y Villano restaurados). " +
+                            "\nNOTA: El estado transitorio (arma, supremos, veneno, buff) no se pudo restaurar " +
+                            "por la estructura de las clases.", "Carga exitosa", JOptionPane.INFORMATION_MESSAGE);
+                });
+
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(vista, 
+                        "No se encontró el archivo '" + ServicioPersistencia.FILE_NAME + "'. Guarde una partida primero.", 
+                        "Error de Carga", JOptionPane.WARNING_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(vista, 
+                        "Error al cargar la partida: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
         vista.getBtnSalir().addActionListener(e -> System.exit(0));
     }
 }
