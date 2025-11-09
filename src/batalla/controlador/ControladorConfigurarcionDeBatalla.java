@@ -1,120 +1,121 @@
 package batalla.controlador;
 
-import batalla.vista.ConfiguracionInicial;
-import batalla.vista.VentanaPrincipalJuego;
-import javax.swing.JOptionPane;
-import javax.swing.SpinnerNumberModel;
-import java.util.*;
-import java.io.FileNotFoundException; // Necesario para la función de carga
+// --- Herramientas que vamos a usar ---
+import batalla.vista.ConfiguracionInicial;   // La 1ra ventana (el .form)
+import batalla.vista.VentanaPrincipalJuego; // La 2da ventana (la del juego)
+import javax.swing.JOptionPane;           
+import javax.swing.SpinnerNumberModel;   
+import java.util.*;                       
+import java.io.FileNotFoundException;     
+
 
 public class ControladorConfigurarcionDeBatalla {
 
-    public static class ConfigPartida {
-
+    
+    public static class ConfigPartida { //Clase configuracion de partida/parametros DTO PARA PASAR VALORES
         public int vida, fuerza, defensa, bendicion, cantidad;
     }
 
-    private static class EstadoA2 {
+    
+    private static class EstadoA2 { //Clase estado 
+        enum TipoPersonaje { HEROE, VILLANO }                                                                                                                                                                    
 
-        enum TipoPersonaje {
-            HEROE, VILLANO
-        }
-
-        static class RegistroJugador {
-
-            final String nombre, apodo;
+        
+        static class RegistroJugador { //Clase para Regitrar un jugador 
+            final String nombre, apodo; 
             final TipoPersonaje tipo;
-
             RegistroJugador(String n, String a, TipoPersonaje t) {
-                nombre = n;
-                apodo = a;
-                tipo = t;
+                nombre = n; apodo = a; tipo = t;
             }
         }
+
+        // Lo metemos en una lista 
         final List<RegistroJugador> registrados = new ArrayList<>();
-        String apodoHeroe = null, apodoVillano = null;
+        
+        //Creamos Apodos 
+        String apodoHeroe = null;
+        String apodoVillano = null;
 
-        void agregarJugador(String nombre, String apodo, String tipoStr) {
-            if (nombre == null || nombre.trim().isEmpty()) {
+        
+        void agregarJugador(String nombre, String apodo, String tipoStr) { //Metodo que se utiliza para agregar jugador 
+            if (nombre == null || nombre.trim().isEmpty())
                 throw new IllegalArgumentException("El nombre no puede estar vacío.");
-            }
-            if (!ValidacionApodos.esValido(apodo)) {
+            
+            if (!ValidacionApodos.esValido(apodo))
                 throw new IllegalArgumentException("Apodo inválido (3-10 caracteres, solo letras y espacios).");
-            }
-
+            
             String ap = apodo.trim();
             boolean dup = registrados.stream().anyMatch(r -> r.apodo.equalsIgnoreCase(ap));
-            if (dup) {
-                throw new IllegalArgumentException("Ya existe un personaje con ese apodo.");
-            }
-
-            if (tipoStr == null) {
-                throw new IllegalArgumentException("Tipo no seleccionado.");
-            }
+            if (dup) throw new IllegalArgumentException("Ya existe un personaje con ese apodo.");
+            
+           
+            if (tipoStr == null) throw new IllegalArgumentException("Tipo no seleccionado.");
             TipoPersonaje tipo;
             switch (tipoStr.toLowerCase()) {
-                case "heroe":
-                case "héroe":
-                    tipo = TipoPersonaje.HEROE;
-                    break;
-                case "villano":
-                    tipo = TipoPersonaje.VILLANO;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Tipo desconocido: " + tipoStr);
+                case "heroe": case "héroe": tipo = TipoPersonaje.HEROE; break;
+                case "villano":             tipo = TipoPersonaje.VILLANO; break;
+                default: throw new IllegalArgumentException("Tipo desconocido: " + tipoStr);
             }
 
+            //Validamos que no se repita el pj 
             if (tipo == TipoPersonaje.HEROE) {
-                if (apodoHeroe != null) {
-                    throw new IllegalArgumentException("Ya hay un Héroe registrado.");
-                }
-                apodoHeroe = ap;
+                if (apodoHeroe != null) throw new IllegalArgumentException("Ya hay un Héroe registrado.");
+                apodoHeroe = ap; 
             } else {
-                if (apodoVillano != null) {
-                    throw new IllegalArgumentException("Ya hay un Villano registrado.");
-                }
-                apodoVillano = ap;
+                if (apodoVillano != null) throw new IllegalArgumentException("Ya hay un Villano registrado.");
+                apodoVillano = ap; 
             }
+            
+            // Si Cumple con las condicione se añade 
             registrados.add(new RegistroJugador(nombre.trim(), ap, tipo));
         }
 
+        
         boolean eliminarPorApodo(String apodo) {
-            if (apodo == null || apodo.isBlank()) {
-                return false;
-            }
-            String ap = apodo.trim();
-            Optional<RegistroJugador> f = registrados.stream()
-                    .filter(r -> r.apodo.equalsIgnoreCase(ap))
+            
+            Optional<RegistroJugador> f = registrados.stream()//Filtramos por apodo 
+                    .filter(r -> r.apodo.equalsIgnoreCase(apodo.trim()))
                     .findFirst();
-            if (f.isEmpty()) {
-                return false;
-            }
+            if (f.isEmpty()) return false; // No estaba en la lista
+
+            // Si lo encontramos, bajamos la "bandera"
             var r = f.get();
-            if (r.tipo == TipoPersonaje.HEROE && apodoHeroe != null && apodoHeroe.equalsIgnoreCase(ap)) {
-                apodoHeroe = null;
-            }
-            if (r.tipo == TipoPersonaje.VILLANO && apodoVillano != null && apodoVillano.equalsIgnoreCase(ap)) {
-                apodoVillano = null;
-            }
-            return registrados.remove(r);
+            if (r.tipo == TipoPersonaje.HEROE) apodoHeroe = null; //Pregunta
+            if (r.tipo == TipoPersonaje.VILLANO) apodoVillano = null;
+            
+            return registrados.remove(r); //Se elimina 
         }
 
+        
         boolean tieneHeroeYVillano() {
             return apodoHeroe != null && apodoVillano != null;
         }
-    }
 
-    public static void configurar(ConfiguracionInicial vista, ControladorBatalla ctrlBatalla) {
-        final EstadoA2 estado = new EstadoA2();
-        final Random rnd = new Random();
+        //Verificamos 
+        RegistroJugador getHeroe() {
+            return registrados.stream().filter(r -> r.tipo == TipoPersonaje.HEROE).findFirst().orElse(null);
+        }
+        RegistroJugador getVillano() {
+            return registrados.stream().filter(r -> r.tipo == TipoPersonaje.VILLANO).findFirst().orElse(null);
+        }
+    } 
 
-        // 1) Combo tipo
+    
+    
+    public static void configurar(ConfiguracionInicial vista, ControladorBatalla ctrlBatalla) { // unimos Formularios
+        
+        
+        final EstadoA2 estado = new EstadoA2(); //Instaciamos 
+        
+        final Random rnd = new Random(); 
+
+        
+        
         vista.getCmbTipo().removeAllItems();
         vista.getCmbTipo().addItem("Heroe");
         vista.getCmbTipo().addItem("Villano");
-
-        // 2) Spinners y combo // configura los atributos iniciales
-        vista.getSpnVidainicial().setModel(new SpinnerNumberModel(120, 100, 160, 1));
+        
+        vista.getSpnVidainicial().setModel(new SpinnerNumberModel(120, 100, 160, 1));//Conectamos
         vista.getSpnFuerzainicial1().setModel(new SpinnerNumberModel(20, 15, 25, 1));
         vista.getSpnDefensainicial().setModel(new SpinnerNumberModel(10, 8, 13, 1));
         vista.getSpnBendicioninicial().setModel(new SpinnerNumberModel(50, 30, 100, 1));
@@ -125,35 +126,41 @@ public class ControladorConfigurarcionDeBatalla {
         vista.getCmbCantidadBatallas().addItem("5");
         vista.getCmbCantidadBatallas().setSelectedItem("3");
 
-        // 3) Random + default aleatorio
+        
+
+        // Botón "RANDOMIZAR"
         vista.getBtnCambiar().addActionListener(e -> {
             vista.getSpnVidainicial().setValue(100 + rnd.nextInt(61));
             vista.getSpnFuerzainicial1().setValue(15 + rnd.nextInt(11));
             vista.getSpnDefensainicial().setValue(8 + rnd.nextInt(6));
             vista.getSpnBendicioninicial().setValue(30 + rnd.nextInt(71));
         });
-        vista.getBtnCambiar().doClick();
+        vista.getBtnCambiar().doClick(); // Lo apretamos una vez al inicio
 
-        // 4) Agregar
+        // Botón "AGREGAR"
         vista.getBtnAgregar().addActionListener(e -> {
             try {
+                // Llama al "Guardia de Seguridad" (el método agregarJugador)
                 estado.agregarJugador(
                         vista.getTxtNombre1().getText(),
                         vista.getTxtApodo().getText(),
                         (String) vista.getCmbTipo().getSelectedItem()
                 );
+                // Si el guardia no se quejó (no hubo error), mostramos OK
                 JOptionPane.showMessageDialog(vista, "Personaje agregado ✅");
                 vista.getTxtNombre1().setText("");
                 vista.getTxtApodo().setText("");
             } catch (IllegalArgumentException ex) {
+                // Si el guardia se quejó (tiró un error), mostramos el error
                 JOptionPane.showMessageDialog(vista, ex.getMessage(), "Validación", JOptionPane.WARNING_MESSAGE);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(vista, "Error inesperado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        // 5) Eliminar
+        // Botón "ELIMINAR"
         vista.getBtnEliminar().addActionListener(e -> {
+            // Llama al "Guardia" de eliminar y avisa si pudo o no
             boolean ok = estado.eliminarPorApodo(vista.getTxtApodo().getText());
             JOptionPane.showMessageDialog(
                     vista,
@@ -162,127 +169,121 @@ public class ControladorConfigurarcionDeBatalla {
                     JOptionPane.INFORMATION_MESSAGE
             );
         });
-
-        // 6) iniciar
+        //hasta aca 
+     
         vista.getBtnIniciar().addActionListener(e -> {
             try {
+                
                 if (!estado.tieneHeroeYVillano()) {
-                    JOptionPane.showMessageDialog(vista,
-                            "Debe haber 1 HÉROE y 1 VILLANO.",
-                            "Validación", JOptionPane.WARNING_MESSAGE);
-                    return;
+                    JOptionPane.showMessageDialog(
+                            vista, "Debe haber 1 HÉROE y 1 VILLANO.",
+                            "Validación", JOptionPane.WARNING_MESSAGE
+                    );
+                    return; 
                 }
 
-                // ==============================
-                // 🔹 Leer configuración
-                // ==============================
+                
                 ConfigPartida cfg = new ConfigPartida();
                 cfg.vida = (Integer) vista.getSpnVidainicial().getValue();
                 cfg.fuerza = (Integer) vista.getSpnFuerzainicial1().getValue();
                 cfg.defensa = (Integer) vista.getSpnDefensainicial().getValue();
                 cfg.bendicion = (Integer) vista.getSpnBendicioninicial().getValue();
                 cfg.cantidad = Integer.parseInt((String) vista.getCmbCantidadBatallas().getSelectedItem());
-                if (cfg.cantidad != 2 && cfg.cantidad != 3 && cfg.cantidad != 5) {
-                    cfg.cantidad = 3;
-                }
+                if (cfg.cantidad != 2 && cfg.cantidad != 3 && cfg.cantidad != 5) cfg.cantidad = 3;
 
-                // ==============================
-                // 🔹 Buscar personajes agregados
-                // ==============================
-                EstadoA2.RegistroJugador heroeData = estado.registrados.stream()
-                        .filter(r -> r.tipo == EstadoA2.TipoPersonaje.HEROE)
-                        .findFirst()
-                        .orElseThrow(() -> new Exception("No se encontró el héroe."));
+               
+                EstadoA2.RegistroJugador hReg = estado.getHeroe();
+                EstadoA2.RegistroJugador vReg = estado.getVillano();
 
-                EstadoA2.RegistroJugador villanoData = estado.registrados.stream()
-                        .filter(r -> r.tipo == EstadoA2.TipoPersonaje.VILLANO)
-                        .findFirst()
-                        .orElseThrow(() -> new Exception("No se encontró el villano."));
+                
+                batalla.modelo.Heroe heroeUI = new batalla.modelo.Heroe(
+                        hReg != null ? hReg.nombre : estado.apodoHeroe, cfg.vida, cfg.fuerza, cfg.defensa, cfg.bendicion);
+                batalla.modelo.Villano villanoUI = new batalla.modelo.Villano(
+                        vReg != null ? vReg.nombre : estado.apodoVillano, cfg.vida, cfg.fuerza, cfg.defensa, cfg.bendicion);
 
-                // ==============================
-                // 🔹 Crear instancias de personajes
-                // ==============================
-                batalla.modelo.Heroe heroe = new batalla.modelo.Heroe(
-                        heroeData.nombre, cfg.vida, cfg.fuerza, cfg.defensa, cfg.bendicion
-                );
-
-                batalla.modelo.Villano villano = new batalla.modelo.Villano(
-                        villanoData.nombre, cfg.vida, cfg.fuerza, cfg.defensa, cfg.bendicion
-                );
-
-                // ==============================
-                // 🔹 Crear ventana principal y controlador
-                // ==============================
+                
                 VentanaPrincipalJuego vpj = new VentanaPrincipalJuego();
-                ControladorVentanaPrincipalJuego ctrlJuego
-                        = new ControladorVentanaPrincipalJuego(vpj, ctrlBatalla, heroe, villano, cfg.cantidad);
+                ControladorVentanaPrincipalJuego ctrlJuego =
+                        new ControladorVentanaPrincipalJuego(vpj, ctrlBatalla, heroeUI, villanoUI, cfg.cantidad);
 
-                // 🔹 Conectar el listener entre la batalla y la ventana
+                
                 ctrlBatalla.setListener(ctrlJuego);
 
-                // 🔹 Iniciar la batalla completa en un hilo
-                Thread batallaThread = new Thread(() -> ctrlBatalla.iniciarBatalla(
-                        heroe.getNombre(),
-                        villano.getNombre(),
-                        cfg
-                ));
-
-                // [MODIFICACIÓN CLAVE] Mostrar ventana principal y cerrar la configuración en el EDT
-                javax.swing.SwingUtilities.invokeLater(() -> {
-                    vpj.setVisible(true);
-                    vista.dispose();
-                    batallaThread.start();
+                
+                Thread t = new Thread(() -> {
+                    
+                    for (int i = 1; i <= cfg.cantidad; i++) {
+                        
+                        ctrlJuego.actualizarPartida(i, cfg.cantidad);
+                        
+                        ctrlBatalla.iniciarBatalla(heroeUI.getNombre(), villanoUI.getNombre(), cfg);
+                    }
                 });
 
+               
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    vpj.setVisible(true); 
+                    vista.dispose();      
+                    t.start();            
+                });
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(vista,
-                        "Error al iniciar: " + ex.getMessage(),
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        vista, "Error al iniciar: " + ex.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE
+                );
             }
         });
 
-        // Cargar / Salir
+        // ===================================================================
+        // 7) Botón "CARGAR"
+        // ===================================================================
         vista.getBtnCargar().addActionListener(e -> {
             try {
-                // [Uso de la clase anidada para la carga]
-                ServicioPersistencia.EstadoPartidaGuardada estadoCargado = ServicioPersistencia.cargarPartida();
+                
+                ServicioPersistencia.EstadoPartidaGuardada estadoCargado =
+                        ServicioPersistencia.cargarPartida();
 
-                // 🔹 Crear ventana principal y controlador con el estado cargado
+                
                 VentanaPrincipalJuego vpj = new VentanaPrincipalJuego();
-                ControladorVentanaPrincipalJuego ctrlJuego
-                        = new ControladorVentanaPrincipalJuego(
-                                vpj, ctrlBatalla, 
-                                estadoCargado.heroe, estadoCargado.villano, 
-                                estadoCargado.totalPartidas);
+                ControladorVentanaPrincipalJuego ctrlJuego =
+                        new ControladorVentanaPrincipalJuego(
+                                vpj, ctrlBatalla,
+                                estadoCargado.heroe, 
+                                estadoCargado.villano, 
+                                estadoCargado.totalPartidas
+                        );
                 
-                // Nota: La información del arma actual y supremos se pierde.
-
-                // Mostrar ventana principal y cerrar la configuración
                 ctrlBatalla.setListener(ctrlJuego);
+
                 
-                // [MODIFICACIÓN CLAVE] Mostrar ventana principal y cerrar la configuración en el EDT
                 javax.swing.SwingUtilities.invokeLater(() -> {
                     vpj.setVisible(true);
                     vista.dispose();
-                    
-                    JOptionPane.showMessageDialog(vpj, 
-                            "Partida base cargada (Héroe y Villano restaurados). " +
-                            "\nNOTA: El estado transitorio (arma, supremos, veneno, buff) no se pudo restaurar " +
-                            "por la estructura de las clases.", "Carga exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    // Este es el cartelito que querías vos:
+                    JOptionPane.showMessageDialog(
+                            vpj,
+                            "Partida base cargada (Héroe y Villano restaurados).\n" +
+                            "Nota: Arma/effects transitorios no se restauran con esta estructura.",
+                            "Carga exitosa",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
                 });
 
-            } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(vista, 
-                        "No se encontró el archivo '" + ServicioPersistencia.FILE_NAME + "'. Guarde una partida primero.", 
+            } catch (FileNotFoundException ex1) {
+                
+                JOptionPane.showMessageDialog(vista,
+                        "No se encontró el archivo '" + ServicioPersistencia.FILE_NAME + "'. Guarde una partida primero.",
                         "Error de Carga", JOptionPane.WARNING_MESSAGE);
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(vista, 
+                // Otro error (ej. archivo roto)
+                JOptionPane.showMessageDialog(vista,
                         "Error al cargar la partida: " + ex.getMessage(),
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
         
-        vista.getBtnSalir().addActionListener(e -> System.exit(0));
+        vista.getBtnSalir().addActionListener(e -> System.exit(0)); // Cierra el programa
     }
 }

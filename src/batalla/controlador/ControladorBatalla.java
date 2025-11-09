@@ -48,6 +48,9 @@ public class ControladorBatalla {
         int turno = 1;
         Personaje actual = heroe;
         Personaje enemigo = villano;
+        
+        // Limpiar listas de batallas anteriores
+        eventosEspeciales.clear();
 
         // Estado inicial
         if (listener != null) listener.onEstado(heroe, villano);
@@ -68,6 +71,20 @@ public class ControladorBatalla {
             int vidaAntesEnemigo = enemigo.getVida();
 
             actual.decidirAccion(enemigo);
+
+            // Chequeamos si la acción mató al enemigo
+            if (!enemigo.estaVivo()) {
+                if (listener != null) listener.onEstado(heroe, villano); // Actualiza la vida a 0
+                
+                // Generamos el último evento de daño
+                String ev = actual.getNombre() + " dañó a " + enemigo.getNombre()
+                          + " (" + vidaAntesEnemigo + " -> " + enemigo.getVida() + ")";
+                eventosEspeciales.add(ev);
+                System.out.println("[ACCION] " + ev);
+                if (listener != null) listener.onAccion(ev);
+                
+                break; // Termina el bucle
+            }
 
             String armaDesp = (actual.getArmaActual()!=null)? actual.getArmaActual().getNombre() : "-";
 
@@ -98,24 +115,44 @@ public class ControladorBatalla {
             actual = enemigo;
             enemigo = t;
             turno++;
+            
+            // ==========================================================
+            // ===          AQUÍ ESTÁ LA PAUSA DE 1 SEGUNDO           ===
+            // ==========================================================
+            try {
+                // Pausa el juego por 1 segundo (1000 milisegundos)
+                Thread.sleep(1000); 
+            } catch (InterruptedException ex) {
+                // No hacer nada, solo continuar
+            }
+            // ==========================================================
+            
         }
 
         // Fin de batalla
         String ganador = heroe.estaVivo()? heroe.getNombre() : villano.getNombre();
+        
+        // Corregimos el conteo de turnos
+        int turnosTotales = turno;
+        if (heroe.estaVivo() || villano.estaVivo()) { // Si no terminó por veneno
+             turnosTotales = turno - 1;
+        }
+        if (turnosTotales == 0) turnosTotales = 1; // Mínimo 1 turno
+        
         String resumen = "Heroe: " + heroe.getNombre() + 
                          " | Villano: " + villano.getNombre() +
                          " | Ganador: " + ganador +
-                         " | Turnos: " + turno;
+                         " | Turnos: " + turnosTotales;
 
         historial.add(resumen);
         System.out.println("\n=== FIN DE LA BATALLA ===");
         System.out.println(resumen);
 
         if (listener != null)
-            listener.onFin(resumen, heroe, villano, turno, eventosEspeciales, historial);
+            listener.onFin(resumen, heroe, villano, turnosTotales, eventosEspeciales, historial);
 
         // Genera reporte y muestra por consola
-        String reporte = Reportes.generar(heroe, villano, eventosEspeciales, historial, turno);
+        String reporte = Reportes.generar(heroe, villano, eventosEspeciales, historial, turnosTotales);
         VistaConsola.mostrarReporte(reporte);
     }
 }
